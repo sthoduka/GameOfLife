@@ -23,8 +23,9 @@ import java.io.FileWriter;
 
 /**
  * UI for Game of Life
+ * 
  * @author Santosh Thoduka
- *
+ * 
  */
 
 public class UI implements ActionListener, MouseListener {
@@ -71,19 +72,20 @@ public class UI implements ActionListener, MouseListener {
 		menubar.add(menu);
 		menubar.add(start);
 		menubar.add(clear);
-		
+
 		openfile = new JMenuItem("Open File");
 		openfile.addActionListener(this);
 		menu.add(openfile);
 		savefile = new JMenuItem("Save File");
 		savefile.addActionListener(this);
-		menu.add(savefile);		
+		menu.add(savefile);
 		window.setJMenuBar(menubar);
 		window.setSize(windowSize);
 		window.getContentPane().add(panel);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 	}
+
 	/**
 	 * Clear all cells
 	 */
@@ -94,10 +96,12 @@ public class UI implements ActionListener, MouseListener {
 			}
 		}
 	}
+
 	/**
-	 * Read preset configuration from file as x,y coordinates
-	 * for live cells
-	 * @param filename file from which to read
+	 * Read preset configuration from file as x,y coordinates for live cells
+	 * 
+	 * @param filename
+	 *            file from which to read
 	 */
 	private void readFile(String filename) {
 		clear();
@@ -123,30 +127,31 @@ public class UI implements ActionListener, MouseListener {
 		}
 
 	}
-	
+
 	/**
-	 * Save current configuration to file as x,y coordinates of
-	 * live cells
+	 * Save current configuration to file as x,y coordinates of live cells
+	 * 
 	 * @param filename
 	 */
 	private void saveFile(String filename) {
 		try {
 			File f = new File(filename);
-		    BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-		    for(int i = 0; i < panel.xsize; i++) {
-		    	for(int j = 0; j < panel.ysize; j++) {
-		    		if (panel.values[i][j]) {
-		    			String line = Integer.toString(i) + "," + Integer.toString(j) + "\n";
-		    			writer.write(line);
-		    		}
-		    	}
-		    }
-		    writer.close();		    
+			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+			for (int i = 0; i < panel.xsize; i++) {
+				for (int j = 0; j < panel.ysize; j++) {
+					if (panel.values[i][j]) {
+						String line = Integer.toString(i) + ","
+								+ Integer.toString(j) + "\n";
+						writer.write(line);
+					}
+				}
+			}
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * ActionListener for button presses and menu
 	 */
@@ -159,7 +164,7 @@ public class UI implements ActionListener, MouseListener {
 			pauseFlag = true;
 			start.setText("Start");
 		} else if (command.equals("Clear")) {
-			clear();		
+			clear();
 		} else if (command.equals("Open File")) {
 			int ret = filechooser.showOpenDialog(null);
 			if (ret == JFileChooser.APPROVE_OPTION) {
@@ -175,7 +180,7 @@ public class UI implements ActionListener, MouseListener {
 		}
 
 	}
-	
+
 	/**
 	 * Listen to mouse clicks on the grid
 	 */

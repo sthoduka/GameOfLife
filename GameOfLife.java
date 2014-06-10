@@ -2,29 +2,34 @@ import java.util.Arrays;
 
 /**
  * Implementation of Game of Life
+ * 
  * @author Santosh Thoduka
- *
+ * 
  */
 public class GameOfLife {
 	private boolean[][] values;
 	private int xsize, ysize;
-	
+
 	/**
 	 * Initialize grid with size xsize x ysize
-	 * @param xsize width of grid
-	 * @param ysize height of grid
+	 * 
+	 * @param xsize
+	 *            width of grid
+	 * @param ysize
+	 *            height of grid
 	 */
 	public GameOfLife(int xsize, int ysize) {
 		this.xsize = xsize;
 		this.ysize = ysize;
 		values = new boolean[xsize][ysize];
 	}
-	
+
 	/**
 	 * Return current grid
+	 * 
 	 * @return
 	 */
-	public boolean [][] getValues() {
+	public boolean[][] getValues() {
 		return values;
 	}
 
@@ -67,20 +72,24 @@ public class GameOfLife {
 			}
 		}
 	}
-	
+
 	/**
 	 * Return number of live neighbours around cell (i,j)
-	 * @param i x coordinate of cell to check
-	 * @param j y coordinate of cell to check
+	 * 
+	 * @param i
+	 *            x coordinate of cell to check
+	 * @param j
+	 *            y coordinate of cell to check
 	 * @return number of live neighbours of (i,j)
 	 */
 	private int live_neighbours(int i, int j) {
 		return N(i, j) + S(i, j) + E(i, j) + W(i, j) + NE(i, j) + NW(i, j)
 				+ SE(i, j) + SW(i, j);
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to north of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -95,9 +104,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to south of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -112,9 +122,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to east of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -129,9 +140,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to west of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -146,9 +158,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to north-east of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -167,9 +180,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to north-west of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -188,9 +202,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to south-east of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
@@ -209,9 +224,10 @@ public class GameOfLife {
 		else
 			return 0;
 	}
-	
+
 	/**
 	 * Return 1 if neighbour to south-west of (i,j) is alive, 0 otherwise
+	 * 
 	 * @param i
 	 * @param j
 	 * @return
