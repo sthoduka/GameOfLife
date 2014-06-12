@@ -18,7 +18,7 @@ public class GridPanel extends JPanel implements Runnable {
 	Thread t;
 	String f;
 	UI ui;
-	GameOfLife gol;
+	CellularAutomaton ca;
 	int sleep_time;
 
 	/**
@@ -26,7 +26,7 @@ public class GridPanel extends JPanel implements Runnable {
 	 * 
 	 * @param ui
 	 *            Instance of UI class which uses this GridPanel
-	 * @param gol
+	 * @param ca
 	 *            Instance of the GameOfLife class to which the grid is mapped
 	 * @param x_size
 	 *            width (in cells) of grid
@@ -37,10 +37,10 @@ public class GridPanel extends JPanel implements Runnable {
 	 * @param tile_size
 	 *            size in pixels of a cell
 	 */
-	GridPanel(UI ui, GameOfLife gol, int x_size, int y_size, int sleep_time,
+	GridPanel(UI ui, CellularAutomaton ca, int x_size, int y_size, int sleep_time,
 			int tile_size) {
 		this.ui = ui;
-		this.gol = gol;
+		this.ca = ca;
 		xsize = x_size;
 		ysize = y_size;
 		this.tile_size = tile_size;
@@ -65,9 +65,14 @@ public class GridPanel extends JPanel implements Runnable {
 				}
 			} catch (InterruptedException ie) {
 			}
-			gol.nextIteration();
-			repaint();
+			ca.nextIteration();
+			ui.setIterations(ca.getIterationNum());
+			repaint();			
 		}
+	}
+	
+	public void setAutomaton(CellularAutomaton ca) {
+		this.ca = ca;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -83,7 +88,7 @@ public class GridPanel extends JPanel implements Runnable {
 	 *            Graphics object
 	 */
 	private void drawBoxes(Graphics g) {
-		values = gol.getValues();
+		values = ca.getValues();
 		for (int i = 0; i < xsize; i++) {
 			for (int j = 0; j < ysize; j++) {
 				Color tileColor = Color.white;

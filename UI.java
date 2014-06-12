@@ -5,7 +5,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -34,24 +36,31 @@ public class UI implements ActionListener, MouseListener {
 	private JMenu menu;
 	private JMenuItem openfile, savefile;
 	private JFileChooser filechooser;
+	private JComboBox automata_types_cb;
 	private GridPanel panel;
-	private GameOfLife gol;
+	private CellularAutomaton ca;
 	private Dimension windowSize;
 	private JButton start, clear;
+	private JLabel iter_label;
 	boolean pauseFlag = true;
 	public static final int Y_SIZE = 65;
 	public static final int X_SIZE = 130;
 	public static final int SLEEP_TIME_MS = 50;
 	public static final int TILE_SIZE = 10;
+	
+	public static final String [] AUTOMATA_TYPES = {"Life Like", "Langton's Ant"};
+	public static final String [] LIFE_LIKE_TYPES = {"Game of Life", "Seeds"};
+	
 
 	/**
 	 * Initialize frame, menubar and grid
 	 */
 	public UI() {
-		gol = new GameOfLife(X_SIZE, Y_SIZE);
+		//ca = new GameOfLife(X_SIZE, Y_SIZE);
+		ca = new LifeLikeAutomaton(X_SIZE, Y_SIZE);
 		window = new JFrame("Game of Life");
 		windowSize = new Dimension(1316, 716);
-		panel = new GridPanel(this, gol, X_SIZE, Y_SIZE, SLEEP_TIME_MS,
+		panel = new GridPanel(this, ca, X_SIZE, Y_SIZE, SLEEP_TIME_MS,
 				TILE_SIZE);
 		panel.addMouseListener(this);
 		for (int i = 0; i < panel.xsize; i++) {
@@ -72,6 +81,13 @@ public class UI implements ActionListener, MouseListener {
 		menubar.add(menu);
 		menubar.add(start);
 		menubar.add(clear);
+		automata_types_cb = new JComboBox<String>(AUTOMATA_TYPES);
+		automata_types_cb.addActionListener(this);
+		automata_types_cb.setPreferredSize(new Dimension(200,25));
+		automata_types_cb.setMaximumSize( automata_types_cb.getPreferredSize() );
+		menubar.add(automata_types_cb);
+		iter_label = new JLabel();
+		menubar.add(iter_label);
 
 		openfile = new JMenuItem("Open File");
 		openfile.addActionListener(this);
@@ -87,24 +103,14 @@ public class UI implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * Clear all cells
-	 */
-	private void clear() {
-		for (int i = 0; i < panel.xsize; i++) {
-			for (int j = 0; j < panel.ysize; j++) {
-				panel.values[i][j] = false;
-			}
-		}
-	}
-
-	/**
 	 * Read preset configuration from file as x,y coordinates for live cells
 	 * 
 	 * @param filename
 	 *            file from which to read
 	 */
 	private void readFile(String filename) {
-		clear();
+		ca.reset();
+		setIterations(ca.getIterationNum());
 		try {
 			FileInputStream fstream = new FileInputStream(filename);
 			// Get the object of DataInputStream
@@ -151,7 +157,10 @@ public class UI implements ActionListener, MouseListener {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public void setIterations(int iterations) {
+		iter_label.setText(Integer.toString(iterations));
+	}
 	/**
 	 * ActionListener for button presses and menu
 	 */
@@ -160,11 +169,14 @@ public class UI implements ActionListener, MouseListener {
 		if (command.equals("Start")) {
 			pauseFlag = false;
 			start.setText("Stop");
+			automata_types_cb.setEnabled(false);
 		} else if (command.equals("Stop")) {
 			pauseFlag = true;
 			start.setText("Start");
+			automata_types_cb.setEnabled(true);
 		} else if (command.equals("Clear")) {
-			clear();
+			ca.reset();
+			setIterations(ca.getIterationNum());
 		} else if (command.equals("Open File")) {
 			int ret = filechooser.showOpenDialog(null);
 			if (ret == JFileChooser.APPROVE_OPTION) {
@@ -177,8 +189,17 @@ public class UI implements ActionListener, MouseListener {
 				File f = filechooser.getSelectedFile();
 				saveFile(f.getAbsolutePath());
 			}
+		} else if (command.equals("comboBoxChanged")) {
+			if(automata_types_cb.getSelectedItem().equals(AUTOMATA_TYPES[0])) {
+				ca.reset();
+				ca = new LifeLikeAutomaton(X_SIZE, Y_SIZE);
+				panel.setAutomaton(ca);
+			} else if (automata_types_cb.getSelectedItem().equals(AUTOMATA_TYPES[1])) {
+				ca.reset();
+				ca = new LangtonsAnt(X_SIZE, Y_SIZE);
+				panel.setAutomaton(ca);
+			}			
 		}
-
 	}
 
 	/**

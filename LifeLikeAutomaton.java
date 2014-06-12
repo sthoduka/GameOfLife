@@ -6,9 +6,7 @@ import java.util.Arrays;
  * @author Santosh Thoduka
  * 
  */
-public class GameOfLife {
-	private boolean[][] values;
-	private int xsize, ysize;
+public class LifeLikeAutomaton extends CellularAutomaton {
 
 	/**
 	 * Initialize grid with size xsize x ysize
@@ -18,19 +16,8 @@ public class GameOfLife {
 	 * @param ysize
 	 *            height of grid
 	 */
-	public GameOfLife(int xsize, int ysize) {
-		this.xsize = xsize;
-		this.ysize = ysize;
-		values = new boolean[xsize][ysize];
-	}
-
-	/**
-	 * Return current grid
-	 * 
-	 * @return
-	 */
-	public boolean[][] getValues() {
-		return values;
+	public LifeLikeAutomaton(int xsize, int ysize) {
+		super(xsize,ysize);		
 	}
 
 	/**
@@ -39,29 +26,35 @@ public class GameOfLife {
 	public void nextIteration() {
 		boolean[][] valscopy = new boolean[xsize][ysize];
 		// Game of Life
-		int[] born = { 3 };
-		int[] survive = { 2, 3 };
+		int[] born = { 3 }; // if dead cell has 3 neighbours, it comes alive
+		int[] survive = { 2, 3 }; // if live cell has 2 or 3 neighbours it stays alive
+								// all other cells die/stay dead
 		// Diamoeoba
 		// int [] survive = {3,4,6,7,8};
 		// int [] born = {0,1,2,3,4,7,8};
+		boolean seeds = true;
 		for (int i = 0; i < xsize; i++) {
 			for (int j = 0; j < ysize; j++) {
 				int live = live_neighbours(i, j);
-				if (values[i][j]) {
-					if (Arrays.binarySearch(survive, live) >= 0) {
+				if (seeds) {
+					if (!values[i][j] && live == 2) {
 						valscopy[i][j] = true;
 					} else {
 						valscopy[i][j] = false;
 					}
-					/*
-					 * if(live < 2 || live > 3) { valscopy[i][j] = false; } else
-					 * { valscopy[i][j] = true; }
-					 */
 				} else {
-					if (Arrays.binarySearch(born, live) >= 0) {
-						valscopy[i][j] = true;
+					if (values[i][j]) {
+						if (Arrays.binarySearch(survive, live) >= 0) {
+							valscopy[i][j] = true;
+						} else {
+							valscopy[i][j] = false;
+						}
 					} else {
-						valscopy[i][j] = false;
+						if (Arrays.binarySearch(born, live) >= 0) {
+							valscopy[i][j] = true;
+						} else {
+							valscopy[i][j] = false;
+						}
 					}
 				}
 			}
@@ -71,6 +64,7 @@ public class GameOfLife {
 				values[i][j] = valscopy[i][j];
 			}
 		}
+		num_iterations++;
 	}
 
 	/**
