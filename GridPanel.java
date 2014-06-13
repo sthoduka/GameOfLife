@@ -37,8 +37,8 @@ public class GridPanel extends JPanel implements Runnable {
 	 * @param tile_size
 	 *            size in pixels of a cell
 	 */
-	GridPanel(UI ui, CellularAutomaton ca, int x_size, int y_size, int sleep_time,
-			int tile_size) {
+	GridPanel(UI ui, CellularAutomaton ca, int x_size, int y_size,
+			int sleep_time, int tile_size) {
 		this.ui = ui;
 		this.ca = ca;
 		xsize = x_size;
@@ -67,10 +67,10 @@ public class GridPanel extends JPanel implements Runnable {
 			}
 			ca.nextIteration();
 			ui.setIterations(ca.getIterationNum());
-			repaint();			
+			repaint();
 		}
 	}
-	
+
 	public void setAutomaton(CellularAutomaton ca) {
 		this.ca = ca;
 	}

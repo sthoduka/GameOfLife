@@ -17,7 +17,7 @@ public class LifeLikeAutomaton extends CellularAutomaton {
 	 *            height of grid
 	 */
 	public LifeLikeAutomaton(int xsize, int ysize) {
-		super(xsize,ysize);		
+		super(xsize, ysize);
 	}
 
 	/**
@@ -27,11 +27,20 @@ public class LifeLikeAutomaton extends CellularAutomaton {
 		boolean[][] valscopy = new boolean[xsize][ysize];
 		// Game of Life
 		int[] born = { 3 }; // if dead cell has 3 neighbours, it comes alive
-		int[] survive = { 2, 3 }; // if live cell has 2 or 3 neighbours it stays alive
-								// all other cells die/stay dead
+		int[] survive = { 2, 3 }; // if live cell has 2 or 3 neighbours it stays
+									// alive
+									// all other cells die/stay dead
 		// Diamoeoba
 		// int [] survive = {3,4,6,7,8};
 		// int [] born = {0,1,2,3,4,7,8};
+
+		// Day and Night
+		// int [] born = {3,6,7,8};
+		// int [] survive = {3,4,6,7,8};
+
+		// High Life
+		// int [] born = {3,6};
+		// int [] survive = {2,3};
 		boolean seeds = true;
 		for (int i = 0; i < xsize; i++) {
 			for (int j = 0; j < ysize; j++) {

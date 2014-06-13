@@ -45,18 +45,18 @@ public class UI implements ActionListener, MouseListener {
 	boolean pauseFlag = true;
 	public static final int Y_SIZE = 65;
 	public static final int X_SIZE = 130;
-	public static final int SLEEP_TIME_MS = 50;
+	public static final int SLEEP_TIME_MS = 5;
 	public static final int TILE_SIZE = 10;
-	
-	public static final String [] AUTOMATA_TYPES = {"Life Like", "Langton's Ant"};
-	public static final String [] LIFE_LIKE_TYPES = {"Game of Life", "Seeds"};
-	
+
+	public static final String[] AUTOMATA_TYPES = { "Life Like",
+			"Langton's Ant" };
+	public static final String[] LIFE_LIKE_TYPES = { "Game of Life", "Seeds" };
 
 	/**
 	 * Initialize frame, menubar and grid
 	 */
 	public UI() {
-		//ca = new GameOfLife(X_SIZE, Y_SIZE);
+		// ca = new GameOfLife(X_SIZE, Y_SIZE);
 		ca = new LifeLikeAutomaton(X_SIZE, Y_SIZE);
 		window = new JFrame("Game of Life");
 		windowSize = new Dimension(1316, 716);
@@ -83,8 +83,8 @@ public class UI implements ActionListener, MouseListener {
 		menubar.add(clear);
 		automata_types_cb = new JComboBox<String>(AUTOMATA_TYPES);
 		automata_types_cb.addActionListener(this);
-		automata_types_cb.setPreferredSize(new Dimension(200,25));
-		automata_types_cb.setMaximumSize( automata_types_cb.getPreferredSize() );
+		automata_types_cb.setPreferredSize(new Dimension(200, 25));
+		automata_types_cb.setMaximumSize(automata_types_cb.getPreferredSize());
 		menubar.add(automata_types_cb);
 		iter_label = new JLabel();
 		menubar.add(iter_label);
@@ -157,10 +157,11 @@ public class UI implements ActionListener, MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setIterations(int iterations) {
 		iter_label.setText(Integer.toString(iterations));
 	}
+
 	/**
 	 * ActionListener for button presses and menu
 	 */
@@ -190,15 +191,16 @@ public class UI implements ActionListener, MouseListener {
 				saveFile(f.getAbsolutePath());
 			}
 		} else if (command.equals("comboBoxChanged")) {
-			if(automata_types_cb.getSelectedItem().equals(AUTOMATA_TYPES[0])) {
+			if (automata_types_cb.getSelectedItem().equals(AUTOMATA_TYPES[0])) {
 				ca.reset();
 				ca = new LifeLikeAutomaton(X_SIZE, Y_SIZE);
 				panel.setAutomaton(ca);
-			} else if (automata_types_cb.getSelectedItem().equals(AUTOMATA_TYPES[1])) {
+			} else if (automata_types_cb.getSelectedItem().equals(
+					AUTOMATA_TYPES[1])) {
 				ca.reset();
 				ca = new LangtonsAnt(X_SIZE, Y_SIZE);
 				panel.setAutomaton(ca);
-			}			
+			}
 		}
 	}
 
